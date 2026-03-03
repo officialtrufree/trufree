@@ -1,33 +1,37 @@
+"use client";
+
+import { createClient } from "@supabase/supabase-js";
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
+
 export default function Home() {
+  const signInWithGoogle = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: window.location.origin
+      }
+    });
+  };
+
   return (
-    <main style={{ padding: "60px 20px", textAlign: "center" }}>
-      <h1 style={{ fontSize: "48px", marginBottom: "20px" }}>
-        Know What’s Actually Free.
-      </h1>
+    <main style={{ textAlign: "center", marginTop: "100px" }}>
+      <h1>Know What’s Actually Free.</h1>
 
-      <p style={{ fontSize: "20px", color: "#555", marginBottom: "40px" }}>
-        Enter any app or website to see how free it truly is.
-      </p>
-
-      <div style={{ maxWidth: "500px", margin: "0 auto" }}>
-        <input
-          type="text"
-          placeholder="Search an app or website..."
-          style={{
-            width: "100%",
-            padding: "15px",
-            fontSize: "16px",
-            borderRadius: "8px",
-            border: "1px solid #ccc",
-          }}
-        />
-      </div>
-
-      <div style={{ marginTop: "60px" }}>
-        <p style={{ color: "#888" }}>
-          One payment. Lifetime access. No subscriptions.
-        </p>
-      </div>
+      <button
+        onClick={signInWithGoogle}
+        style={{
+          marginTop: "30px",
+          padding: "12px 20px",
+          fontSize: "16px",
+          cursor: "pointer"
+        }}
+      >
+        Sign in with Google
+      </button>
     </main>
   );
 }
